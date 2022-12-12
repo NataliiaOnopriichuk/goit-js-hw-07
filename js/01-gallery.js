@@ -32,17 +32,18 @@ function onImageOriginal(event) {
   const instance = basicLightbox.create(
     `
 		<img src="${event.target.dataset.source}" width='800' height='600'>
-	`
+	`,
+    {
+      onClose: () => {
+        window.removeEventListener("keydown", keyCloseModal);
+      },
+    }
   );
   instance.show();
 
-  divEl.addEventListener(
-    "keydown",
-    (event) => {
-      if (event.code === "Escape") {
-        instance.close();
-      }
-    },
-    { once: true }
-  );
+  const keyCloseModal = divEl.addEventListener("keydown", (event) => {
+    if (event.code === "Escape") {
+      instance.close();
+    }
+  });
 }
